@@ -12,3 +12,6 @@ print(data)
 data1= input("Are you a student if yes press y else n")[0]
 print(data1)
 print(data1)
+
+
+print("hello")
