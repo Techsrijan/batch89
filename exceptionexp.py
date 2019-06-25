@@ -27,4 +27,6 @@ finally:
     # it always executes
     print("freez is close")
 
-#print("thank you")
+#lst[5]
+print("thank you")
+print("freez is close")
