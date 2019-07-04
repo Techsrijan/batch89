@@ -47,3 +47,23 @@ def subzod(*b):
     print(c)
 
 subzod(1,2,3,4,5,6,54,5445,454545,45454)
+
+
+def registration(name,*data):
+    print(name)
+    print(data)
+
+
+registration('ram',"Dashrath","ayodhya","india")
+
+
+#** keyword variable length
+def registration1(name,**data):
+    print(name)
+    print(data)
+    for i,j in data.items():
+        print(i,j)
+
+registration1('ram',fname="Dashrath",city="ayodhya",country="india")
+
+
