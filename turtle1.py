@@ -1,0 +1,23 @@
+#import turtle
+from turtle import *
+s=Turtle()
+s.hideturtle()
+s.pensize(5)
+s.pencolor("red")
+s.speed(1)
+s.forward(100)
+s.left(90)
+s.forward(100)
+s.left(90)
+s.forward(100)
+s.left(90)
+s.forward(100)
+s.penup()
+s.forward(100)
+s.pendown()
+s.pencolor("blue")
+s.right(90)
+s.forward(100)
+s.write("messi fan")
+done()
+
