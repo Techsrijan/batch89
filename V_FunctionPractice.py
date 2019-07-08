@@ -128,7 +128,7 @@ print(checkPalindrome(c))"""
 
 
 #print Square of every values in list
-def squarelist(l):
+"""def squarelist(l):
     x = []
     for i in l:
         x.append(i**2)
@@ -137,4 +137,46 @@ def squarelist(l):
 #lst = [1,2,3,4,5,6,7,8,9,10]
 lst = list(range(1,21))
 print(lst)
-print("Square of every values in list :",squarelist(lst))
+print("Square of every values in list :",squarelist(lst))"""
+
+
+
+
+
+#GCD program
+
+"""def gcd(n1,n2):
+    x = []
+    y = []
+
+    for i in range(1,n1+1):
+        if n1 % i == 0:
+            x.append(i)
+
+    for j in range(1,n2+1):
+        if n2 % j == 0:
+            y.append(j)
+
+    return x,y
+
+#a = int(input("Enter first no. : "))
+#b = int(input("Enter second no. : "))
+a,b = [int(k) for k in input("Enter your numbers : ").split(",")]
+m,n=gcd(a,b)
+
+print("Factors of ",a,"is :",m,"\nFactors of ",b,"is :",n)
+
+if max(m) in n:
+    print("GCD is = ",max(m))
+elif max(n) in m:
+    print("GCD of",a,"and",b," = ", max(n))
+
+
+else:
+    print("GCD is not posssible ")"""
+
+import datetime
+now = datetime.datetime.now()
+print ("Current date and time : ")
+print (now.strftime("%Y-%m-%d %H:%M:%S"))
+
