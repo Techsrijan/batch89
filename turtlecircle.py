@@ -19,8 +19,8 @@ s.pensize(5)
 '''s.circle(100)
 s.circle(-100)'''
 
-#s.circle(100,steps=10)
-s.circle(100,30)
+#s.circle(100,steps=1)
+s.circle(100,90)
 
 
 done()
