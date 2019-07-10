@@ -1,5 +1,6 @@
 from time import *
 #return no of second from 1970 to today
+# https://www.guru99.com/date-time-and-datetime-classes-in-python.html
 print(time())
 print(localtime())
 print(asctime())
