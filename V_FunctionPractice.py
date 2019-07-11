@@ -140,7 +140,21 @@ print(lst)
 print("Square of every values in list :",squarelist(lst))"""
 
 
+#Write a Python function that accepts a string and calculate the number of upper case letters and lower case letters.
+def calstring(name):
+    capital=small=space = 0
+    for i in name:
+        if i.isupper():
+            capital += 1
+        elif i.islower():
+            small += 1
+        else:
+            space += 1
+    return capital,small,space
 
+username = input("Enter your Sentence : ")
+C,s,sp=calstring(username)
+print("No. of Capital letters is : {}\nNo. of small letters is : {}\nNo. of total spaces is : {}".format(C,s,sp))
 
 
 #GCD program

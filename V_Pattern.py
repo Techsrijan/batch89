@@ -1,4 +1,4 @@
-for i in range(1,5):
+"""for i in range(1,5):
     for j in range(1,i+1):
         print(j,"\t",end="")
     print()
@@ -70,6 +70,10 @@ for i in range(1,6):
 print()
 print()
 
+
+print("xxxxxxxxxxJAVAxxxxxxxxxx\n**********PYTHON**********\n@@@@@@@@@@Oracle@@@@@@@@@@\n##########Php##########")
+
+
 for i in range(1,6):
     for j in range(1,6):
         if j >= 6 - i:
@@ -77,6 +81,27 @@ for i in range(1,6):
         else:
             print(" ",end="")
     print()
+"""
+
+
+
+"""
+name = "VISHAL"
+for  i in range(len(name)):
+    for j in range(i+1):
+        print(name[j],end="")
+    print()
+"""
+"""name = "VISHAL is a good boy"
+print(name.center(150,'*'))"""
+
+
+
+
+
+
+
+
 
 
 
