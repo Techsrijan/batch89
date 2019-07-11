@@ -148,8 +148,10 @@ def calstring(name):
             capital += 1
         elif i.islower():
             small += 1
-        else:
+        elif i == " ":
             space += 1
+        else:
+            pass
     return capital,small,space
 
 username = input("Enter your Sentence : ")

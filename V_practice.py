@@ -64,7 +64,10 @@ for i in name:
         capital += 1
     elif i.islower():
         small += 1
-    else:
+    elif i == " ":
         space += 1
+    else:
+        pass
+
 
 print("No. of Capital letters is : {}\nNo. of small letters is : {}\nNo. of total spaces is : {}".format(capital,small,space))
