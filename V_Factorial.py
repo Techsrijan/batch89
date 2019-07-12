@@ -3,7 +3,11 @@ try:
     fact = 1
     for i in range(n,0,-1):
         fact = fact * i
-        print(i,"* ",end="")
+
+        if i == 1:
+            print(i,"=",fact)
+        else:
+            print(i,"* ",end="")
 
     print()
     print("Factorial of",n, "=",fact)
