@@ -19,3 +19,10 @@ else:print("Nahi mila")
 
 print("by using array funcion")
 print(marks.index(search))
+
+
+
+
+
+
+
