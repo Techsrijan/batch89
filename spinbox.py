@@ -13,7 +13,7 @@ root=Tk()
 
 #sp=Spinbox(root, from_=1 ,to=4,).pack()
 #height=no of character
-txt=Text(root,height=2,width=3).pack()
+txt=Text(root,height=3,width=30,wrap=WORD,padx=10,pady=10,bd=5,selectbackground="red").pack()
 f=Frame(root)
 i=IntVar()
 r=Radiobutton(f,text="male",value=1,variable=i)
@@ -46,7 +46,7 @@ c.pack()
 c1.pack()
 c2.pack()
 
-l=Listbox(root,width=50)
+l=Listbox(root,width=50,selectmode=MULTIPLE)
 l.insert(3,"JAVAsahdsahdkashdkashdkadhkadhakdhkadhaks")
 l.insert(2,"PHP")
 l.insert(1,"PYTHON")
