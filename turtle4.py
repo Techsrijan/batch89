@@ -6,7 +6,7 @@ w.title("My turtle")
 
 s.shape('turtle')
 
-s.color('#A92707')
+s.color('yellow')
 s.speed(1)
 s.pencolor('red')
 s.pensize(5)
