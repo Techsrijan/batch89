@@ -16,7 +16,7 @@ b=IntVar()
 res=IntVar()
 
 label=Label(root,text="ENTER First Number",fg="red",).place(x=20,y=50)
-entry1=Entry(root,textvariable=a).place(x=250,y=50)
+entry1=Entry(root,textvariable=a,show="*").place(x=250,y=50)
 label1=Label(root,text="ENTER Second number",fg="red",).place(x=20,y=100)
 
 entry2=Entry(root,textvariable=b).place(x=250,y=100)
