@@ -7,6 +7,7 @@ def open_file(event=""):
     print(res)
     for data in res:
         print(data)
+        txt.insert(INSERT,data)
 
 def save_file():
     f=filedialog.asksaveasfile(mode="w",defaultextension=".txt")
@@ -24,7 +25,7 @@ def open_color():
 
 root=Tk()
 root.bind("<Control-o>",open_file)
-txt=Text(root)
+txt=Text(root,height=4)
 btn_open=Button(root,text="Open file",command=open_file)
 btn_saveas=Button(root,text="Save file",command=save_file)
 btn_clr=Button(root,text="choose background color",command=open_color)
