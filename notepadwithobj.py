@@ -3,20 +3,24 @@ from tkinter import filedialog
 
 
 class text_editor:
-
+    current_open_file="openfile"
     def open_file(self):
         f = filedialog.askopenfile(initialdir="c://", title="Select file",
                                    filetypes=(("text file", "*.txt"), ("all files", "*.*")))
         for data in f:
             self.text_area.insert(INSERT, data)
+        self.current_open_file=f.name
 
     def save_file(self):
-        f=open(self.f,mode="a")
-        if f is None:
-            return
-        s = self.text_area.get(1.0, END)
-        f.write(s)
-        f.close()
+        print(te.current_open_file)
+        if self.current_open_file=="openfile":
+            self.save_as_file()
+        else:
+            f = open(self.current_open_file, mode="a")
+            f.write(self.text_area.get(1.0, END))
+            f.close()
+
+
 
 
 
@@ -29,17 +33,25 @@ class text_editor:
         f.close()
 
     def cut_file(self):
-         pass
+         self.copy_file()
+         self.text_area.delete("self.first","self.last")
 
     def copy_file(self):
-         pass
+         self.text_area.clipboard_clear()
+         self.text_area.clipboard_append(self.text_area.selection_get())
 
     def paste_file(self):
-         pass
+         self.text_area.insert(INSERT,self.text_area.clipboard_get())
 
     def delete_file(self):
          pass
 
+
+    def undo_file(self):
+         pass
+
+    def redo_file(self):
+         pass
 
     def __init__(self,master):
         self.master=master
@@ -62,11 +74,14 @@ class text_editor:
         self.edit_menu = Menu(self.main_menu,tearoff=False)
         self.main_menu.add_cascade(label="Edit", menu=self.edit_menu)
         # to add menu in edit menu
+        self.edit_menu.add_command(label="Undo", command=self.undo_file)
+        self.edit_menu.add_command(label="Redo", command=self.redo_file)
+        self.edit_menu.add_separator()
         self.edit_menu.add_command(label="Cut", command=self.cut_file)
         self.edit_menu.add_command(label="Copy", command=self.copy_file)
         self.edit_menu.add_command(label="Paste", command=self.paste_file)
         self.edit_menu.add_command(label="Delete", command=self.delete_file)
-
+        self.edit_menu.add_separator()
 bob = Tk()
 
 te =text_editor(bob)
