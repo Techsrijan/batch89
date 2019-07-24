@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import filedialog
+from tkinter import filedialog,colorchooser
 
 
 class text_editor:
@@ -34,7 +34,7 @@ class text_editor:
 
     def cut_file(self):
          self.copy_file()
-         self.text_area.delete("self.first","self.last")
+         self.text_area.delete('sel.first','sel.last')
 
     def copy_file(self):
          self.text_area.clipboard_clear()
@@ -43,20 +43,24 @@ class text_editor:
     def paste_file(self):
          self.text_area.insert(INSERT,self.text_area.clipboard_get())
 
+    def change_color(self):
+        color = colorchooser.askcolor(title="choose BackGround color")
+        #print(color)
+        self.text_area.configure(background=color[1])
+
+    def change_fore_color(self):
+        color = colorchooser.askcolor(title="choose ForeGround color")
+        #print(color)
+        self.text_area.configure(foreground=color[1])
+
     def delete_file(self):
-         pass
+        pass
 
-
-    def undo_file(self):
-         pass
-
-    def redo_file(self):
-         pass
 
     def __init__(self,master):
         self.master=master
         master.title("MyNotePAd")
-        self.text_area=Text()
+        self.text_area=Text(self.master,undo=True)
         self.text_area.pack(fill=BOTH,expand=1)
         self.main_menu=Menu()
         self.master.config(menu=self.main_menu)
@@ -74,14 +78,22 @@ class text_editor:
         self.edit_menu = Menu(self.main_menu,tearoff=False)
         self.main_menu.add_cascade(label="Edit", menu=self.edit_menu)
         # to add menu in edit menu
-        self.edit_menu.add_command(label="Undo", command=self.undo_file)
-        self.edit_menu.add_command(label="Redo", command=self.redo_file)
+        self.edit_menu.add_command(label="Undo", command=self.text_area.edit_undo)
+        self.edit_menu.add_command(label="Redo", command=self.text_area.edit_redo)
         self.edit_menu.add_separator()
         self.edit_menu.add_command(label="Cut", command=self.cut_file)
         self.edit_menu.add_command(label="Copy", command=self.copy_file)
         self.edit_menu.add_command(label="Paste", command=self.paste_file)
         self.edit_menu.add_command(label="Delete", command=self.delete_file)
         self.edit_menu.add_separator()
+
+        # creating Color menu
+        self.color_menu = Menu(self.main_menu, tearoff=False)
+        self.main_menu.add_cascade(label="Format", menu=self.color_menu)
+        # to add menu in format menu
+        self.color_menu.add_command(label="BackGround color", command=self.change_color)
+        self.color_menu.add_command(label="ForeGround color", command=self.change_fore_color)
+
 bob = Tk()
 
 te =text_editor(bob)
