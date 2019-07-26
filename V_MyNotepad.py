@@ -5,7 +5,6 @@ import datetime
 master=Tk()
 class NotePad_Soft:
     current_open_file=""
-    top=""
     #File menu options methods
     def New_menu(self):
         self.root.title("Untitled - Notepad")
@@ -14,7 +13,7 @@ class NotePad_Soft:
 
 
     def NewWindow_menu(self):
-        top= Toplevel(master)
+        top= Toplevel(self.root)
         top.mainloop()
 
 
