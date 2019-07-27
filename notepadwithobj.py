@@ -4,7 +4,7 @@ from tkinter import filedialog,colorchooser
 
 class text_editor:
     current_open_file="openfile"
-    def open_file(self):
+    def open_file(self,event=""):
         f = filedialog.askopenfile(initialdir="c://", title="Select file",
                                    filetypes=(("text file", "*.txt"), ("all files", "*.*")))
         for data in f:
@@ -60,6 +60,7 @@ class text_editor:
     def __init__(self,master):
         self.master=master
         master.title("MyNotePAd")
+        master.bind("<Control-o>",self.open_file)
         self.text_area=Text(self.master,undo=True)
         self.text_area.pack(fill=BOTH,expand=1)
         self.main_menu=Menu()

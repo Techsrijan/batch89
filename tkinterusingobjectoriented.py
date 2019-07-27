@@ -1,4 +1,4 @@
-from tkinter import *
+sfrom tkinter import *
 
 
 
