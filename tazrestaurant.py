@@ -4,7 +4,10 @@ import pymysql
 
 
 taz=Tk()
-
+global itemIdVar
+global itemNameVar
+global itemRateVar
+global itemTypeVar
 ###############database connect######################################
 def dbconfig():
     global mycursor,conn
@@ -13,7 +16,7 @@ def dbconfig():
 
 ###########################to create heading##########################################
 def mainheading():
-    head=Label(taz,text="Hotel Taz Management system",fg="green",
+    head=Label(taz,text="Hotel Taz Management System",fg="green",
                bg="yellow",font=("Ariel",24,"bold"))
     head.grid(row=0, column=0, columnspan=4, padx=(40, 0), pady=(10, 0))
 #################################to create login window#####################################
@@ -53,6 +56,58 @@ def welcomewindow():
     print("hi")
     usernameLabel = Label(taz, text="Welcome User ")
     usernameLabel.grid(row=2, column=2, padx=20, pady=5)
+    insertButton = Button(taz, text="Add Item", width=20, height=2, fg="green", bd=10, command=additem)
+    insertButton.grid(row=3, column=0, padx=20, pady=5)
+
+
+###################################insert item to database#####################
+def insertItem():
+    pass
+
+
+#######################add item window####################################
+def additemwindow():
+    remove_all_widgets()
+    mainheading()
+    additemLabel = Label(taz, text="INSERT ITEM ")
+    additemLabel.grid(row=2, column=2, padx=20, pady=5)
+
+##########################add item to databse ##############################
+def additem():
+    additemwindow()
+
+    itemIdVar = StringVar()
+    itemNameVar = StringVar()
+    itemRateVar = StringVar()
+    itemTypeVar = StringVar()
+
+    itemIdLabel = Label(taz, text="Item ID")
+    itemIdLabel.grid(row=3, column=2, padx=20, pady=5)
+
+    itemNameLabel = Label(taz, text="Item Name")
+    itemNameLabel.grid(row=4, column=2, padx=20, pady=5)
+
+    itemRateLabel = Label(taz, text="Item Rate")
+    itemRateLabel.grid(row=5, column=2, padx=20, pady=5)
+
+    itemTypeLabel = Label(taz, text="Item Type")
+    itemTypeLabel.grid(row=6, column=2, padx=20, pady=5)
+
+    itemIdEntry = Entry(taz, textvariable=itemIdVar)
+    itemIdEntry.grid(row=3, column=3, padx=20, pady=5)
+
+    itemNameEntry = Entry(taz, textvariable=itemNameVar)
+    itemNameEntry.grid(row=4, column=3, padx=20, pady=5)
+
+    itemRateEntry = Entry(taz, textvariable=itemRateVar)
+    itemRateEntry.grid(row=5, column=3, padx=20, pady=5)
+
+    itemTypeEntry = Entry(taz, textvariable=itemTypeVar)
+    itemTypeEntry.grid(row=6, column=3, padx=20, pady=5)
+
+    ItemAddButton = Button(taz, text="Add", width=20, height=2, fg="green", bd=10, command=insertItem)
+    ItemAddButton.grid(row=7, column=2, columnspan=2)
+
 
 ############################to perform login operation#################################################
 
@@ -72,11 +127,14 @@ def adminlogin():
         welcomewindow()
     else:
         messagebox.showerror("Invalid user", "Either user name or password is incorrect")
+        usernameVar.set=""
 
 
 ##############################################################################
 taz.title("Hote1 Taz Management system")
 mainheading()
+
+
 usernameVar=StringVar()
 passwordVar=StringVar()
 loginwindow()
