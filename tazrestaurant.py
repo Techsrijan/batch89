@@ -4,10 +4,7 @@ import pymysql
 
 
 taz=Tk()
-global itemIdVar
-global itemNameVar
-global itemRateVar
-global itemTypeVar
+
 ###############database connect######################################
 def dbconfig():
     global mycursor,conn
@@ -60,10 +57,6 @@ def welcomewindow():
     insertButton.grid(row=3, column=0, padx=20, pady=5)
 
 
-###################################insert item to database#####################
-def insertItem():
-    pass
-
 
 #######################add item window####################################
 def additemwindow():
@@ -73,13 +66,17 @@ def additemwindow():
     additemLabel.grid(row=2, column=2, padx=20, pady=5)
 
 ##########################add item to databse ##############################
+itemIdVar = StringVar()
+itemNameVar = StringVar()
+itemRateVar = StringVar()
+itemTypeVar = StringVar()
 def additem():
     additemwindow()
+    '''global itemIdVar
+    global itemNameVar
+    global itemRateVar
+    global itemTypeVar'''
 
-    itemIdVar = StringVar()
-    itemNameVar = StringVar()
-    itemRateVar = StringVar()
-    itemTypeVar = StringVar()
 
     itemIdLabel = Label(taz, text="Item ID")
     itemIdLabel.grid(row=3, column=2, padx=20, pady=5)
@@ -108,6 +105,27 @@ def additem():
     ItemAddButton = Button(taz, text="Add", width=20, height=2, fg="green", bd=10, command=insertItem)
     ItemAddButton.grid(row=7, column=2, columnspan=2)
 
+###################################insert item to database#####################
+def insertItem():
+    nameid= itemIdVar.get()
+    name = itemNameVar.get()
+    rate = itemRateVar.get()
+    type = itemTypeVar.get()
+    #print(nameid,name,rate,type)
+
+    dbconfig()
+    #query = "insert into itemlist (name,nameid,rate,type) values('{}','{}','{}','{}')". format(name,nameid,rate,type)
+    query="insert into itemlist (name,nameid,rate,type) values(%s,%s,%s,%s);"
+    val=(name,nameid,rate,type)
+    res=mycursor.execute(query,val)
+    conn.commit()
+    messagebox.showinfo("ITEM SAVED","Item Inserted Successfully")
+    conn.close()
+    itemIdVar.set("")
+    itemNameVar.set("")
+    itemRateVar.set("")
+    itemTypeVar.set("")
+
 
 ############################to perform login operation#################################################
 
@@ -127,7 +145,8 @@ def adminlogin():
         welcomewindow()
     else:
         messagebox.showerror("Invalid user", "Either user name or password is incorrect")
-        usernameVar.set=""
+        usernameVar.set("")
+        passwordVar.set("")
 
 
 ##############################################################################
