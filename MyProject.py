@@ -289,7 +289,7 @@ def updateMethod():
 
     conn.commit()
     conn.close()
-    messagebox.showinfo("ITEM SAVED", "Item Updated Successfully")
+    messagebox.showinfo("ITEM UPDATE", "Item Updated Successfully")
 
     # for blank the placeholder after working
     idItem.set("")
@@ -362,15 +362,24 @@ def deleteMethod():
     ft = fdTypeVar.get()
     fr = rs_price.get()
 
-    delete_query = f"delete from data_insert where ID='{idd}'"
-    mycursor.execute(delete_query)
-    print("data deleted successfully")
+    confirm = messagebox.askokcancel("Alert", "Do You want to delete")
+    if confirm == True:
+        messagebox.showinfo("ITEM DELETE", "Item Deleted Successfully")
+        delete_query = f"delete from data_insert where ID='{idd}'"
+        mycursor.execute(delete_query)
+        print("data deleted successfully")
+
+    else:
+        pass
 
     # data = mycursor.fetchall()
 
     conn.commit()
     conn.close()
-    messagebox.showinfo("ITEM SAVED", "Item Deleted Successfully")
+
+
+
+
 
     # for blank the placeholder after working
     idItem.set("")
@@ -431,14 +440,140 @@ def back_4_first_window():
     btn_back1w = Button(bill, text="Back", bg="pink", justify="center", bd=2, font=("Ariel", 12, "bold"),
                       command=firstwindow).grid(row=2, column=0)
 
+
+
+
+
+
+
+
 ################################################# Here Customer Contents##############################################################
 def Guest():
     remove_all_widgets()
     main_heading()
     back_4_first_window()
+
+    btn_order = Button(bill, text="Order", bg="pink", justify="center", bd=2, font=("Ariel", 12, "bold"),
+                        command=customerOrder).grid(row=2, column=1)
+
+
     label = Label(text="Guest Login", fg="blue", bd=5, bg="sky blue", width=25, height=2,
                   font=("Times New Roman", 12, "bold")).grid(row=1, column=1, columnspan=2)
+    lbl=Label(text="").grid(row=3,column=0)
+    displayDB.grid(row=8, column=0, columnspan=4)
 
+    scrollBar = Scrollbar(bill, orient="vertical", command=displayDB.yview)
+    scrollBar.grid(row=8, column=3, sticky="NSE")
+
+    displayDB.configure(yscrollcommand=scrollBar.set)
+
+    displayDB.heading('#0', text="Food Id")
+    displayDB.heading('#1', text="Food Name")
+    displayDB.heading('#2', text="Food Type")
+    displayDB.heading('#3', text="Food Rate")
+
+    dbdataupdate()
+
+
+
+
+
+################################################# Here Customer order##############################################################
+
+def customerOrder():
+    remove_all_widgets()
+    main_heading()
+    logout()
+    back_4_customer_window()
+    label = Label(text="Customer Order Block", fg="blue", bd=5, bg="sky blue", width=25, height=2,
+                  font=("Times New Roman", 12, "bold")).grid(row=2, column=1, columnspan=2)
+
+    food_id = Label(bill, text="ID", font=("Ariel", 12, "bold")).grid(row=3, column=1, padx=20, pady=5)
+    global idItem
+    idItem = StringVar()
+    id = Entry(bill, textvariable=idItem).grid(row=3, column=2, padx=20, pady=5)
+
+    food_item = Label(bill, text="Food Item", font=("Ariel", 12, "bold")).grid(row=4, column=1, padx=20, pady=5)
+    # entry1 = Entry(root).grid(row=2, column=2, padx=20, pady=5)
+    global foodName
+    foodName = StringVar()
+    food_name = ttk.Combobox(bill, textvariable=foodName, value=["Veg Biryani", "Roti", "Green Salad", "Paneer Tikka", "Paneer DoPyaza",
+                                    "Chicken Tanduri", "Half Fry", "Mutton"]).grid(row=4, column=2, padx=20, pady=5)
+
+    food_type = Label(bill, text="Type", font=("Ariel", 12, "bold")).grid(row=5, column=1, padx=20, pady=5)
+    global fdTypeVar
+    fdTypeVar = StringVar()
+    fdType = ttk.Combobox(bill, textvariable=fdTypeVar, value=["Breakfast", "Lunch", "Dinner"]).grid(row=5, column=2,padx=20, pady=5)
+
+
+    quantity = Label(bill, text="Quantity", font=("Ariel", 12, "bold")).grid(row=6, column=1, padx=20, pady=5)
+    global amount
+    amount = IntVar()
+    num = ttk.Combobox(bill, value=list(range(1, 10)), textvariable=amount).grid(row=6, column=2, padx=20, pady=5)
+
+
+
+    price = Label(bill, text="Price", font=("Ariel", 12, "bold")).grid(row=7, column=1, padx=20, pady=5)
+    global rs_price
+    rs_price = IntVar()
+    rs = Entry(bill, textvariable=rs_price, width=23, bd=2).grid(row=7, column=2, padx=20, pady=5)
+
+    btn = Button(bill, text="Order", bg="pink", justify="center", bd=2, font=("Ariel", 12, "bold"),
+                 command=msges).grid(row=8, column=1, columnspan=2, padx=20, pady=5)
+
+    # id,food_name,quan,rs=input("Enter the values").split(",")
+
+    ############################################Using Treeview to display database items#########################################################################
+
+    displayDB.grid(row=9, column=0, columnspan=4)
+
+    scrollBar = Scrollbar(bill, orient="vertical", command=displayDB.yview)
+    scrollBar.grid(row=9, column=3, sticky="NSE")
+
+    displayDB.configure(yscrollcommand=scrollBar.set)
+
+    displayDB.heading('#0', text="Food Id")
+    displayDB.heading('#1', text="Food Name")
+    displayDB.heading('#2', text="Food Type")
+    displayDB.heading('#3', text="Food Rate")
+
+    dbdataupdate()
+
+def msges():
+
+    dbconfig()
+
+    a = idItem.get()
+    b = foodName.get()
+    c = fdTypeVar.get()
+    d = amount.get()
+    e = rs_price.get()
+
+    insert_query = "insert into guest_order (ID, FoodItem, Type,Quantity, Price) values(%s,%s,%s,%s,%s);"
+    val = (a, b, c, d,e)
+    mycursor.execute(insert_query, val)
+    print("Order successfully")
+
+    # data = mycursor.fetchall()
+
+    conn.commit()
+    conn.close()
+    messagebox.showinfo("ITEM SAVED","Your Food Ordered Successfully")
+
+    #for blank the placeholder after working
+    idItem.set("")
+    foodName.set("")
+    fdTypeVar.set("")
+    amount.set("")
+    rs_price.set("")
+
+    dbdataupdate()   #for display data from database on run time
+
+######################################## Button For First Window##############################################################
+def back_4_customer_window():
+
+    btn_back1w = Button(bill, text="Back", bg="pink", justify="center", bd=2, font=("Ariel", 12, "bold"),
+                      command=Guest).grid(row=1, column=0)
 
 
 
