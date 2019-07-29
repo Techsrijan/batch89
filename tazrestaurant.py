@@ -1,9 +1,12 @@
 from tkinter import *
 from tkinter import messagebox
 import pymysql
+from tkinter import ttk
 
 
 taz=Tk()
+# ========mainTreeView======================
+billsTV = ttk.Treeview(height=15, columns=('Rate', 'Quantity', 'Cost'))
 
 ###############database connect######################################
 def dbconfig():
@@ -65,11 +68,35 @@ def additemwindow():
     additemLabel = Label(taz, text="INSERT ITEM ")
     additemLabel.grid(row=2, column=2, padx=20, pady=5)
 
+
+################# get product data from database into treeview ###########
+def updateProductData():
+    # fetch alla data into records
+    records = billsTV.get_children()
+    # to delete all the records from tree view which is already exist
+    for element in records:
+        billsTV.delete(element)
+
+    # to load the table data to tree view
+    conn = pymysql.connect(host="localhost", user="root", passwd="", db="billservice")
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    query = "select * from itemlist"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    print(data)
+    for row in data:
+        billsTV.insert('', 'end', text=row['nameid'], values=(row["name"], row["rate"], row["type"]))
+
+
+    conn.close()
+
 ##########################add item to databse ##############################
 itemIdVar = StringVar()
 itemNameVar = StringVar()
 itemRateVar = StringVar()
 itemTypeVar = StringVar()
+
+
 def additem():
     additemwindow()
     '''global itemIdVar
@@ -105,13 +132,35 @@ def additem():
     ItemAddButton = Button(taz, text="Add", width=20, height=2, fg="green", bd=10, command=insertItem)
     ItemAddButton.grid(row=7, column=2, columnspan=2)
 
+    #########################################################
+    productLabel = Label(taz, text="List Of Products", font="Arial 25")
+    productLabel.grid(row=8, column=2)
+
+    billsTV.grid(row=9, column=0, columnspan=5)
+
+    scrollBar = Scrollbar(taz, orient="vertical", command=billsTV.yview)
+    scrollBar.grid(row=9, column=4, sticky="NSE")
+
+    billsTV.configure(yscrollcommand=scrollBar.set)
+
+    billsTV.heading('#0', text="Item Id")
+    billsTV.heading('#1', text="Item Name")
+    billsTV.heading('#2', text="Item Rate")
+    billsTV.heading('#3', text="Item Type")
+
+    updateProductData()
+
+
 ###################################insert item to database#####################
 def insertItem():
+    global itemLists
     nameid= itemIdVar.get()
     name = itemNameVar.get()
     rate = itemRateVar.get()
     type = itemTypeVar.get()
     #print(nameid,name,rate,type)
+
+
 
     dbconfig()
     #query = "insert into itemlist (name,nameid,rate,type) values('{}','{}','{}','{}')". format(name,nameid,rate,type)
@@ -125,8 +174,7 @@ def insertItem():
     itemNameVar.set("")
     itemRateVar.set("")
     itemTypeVar.set("")
-
-
+    updateProductData()
 ############################to perform login operation#################################################
 
 def adminlogin():
@@ -158,6 +206,6 @@ usernameVar=StringVar()
 passwordVar=StringVar()
 loginwindow()
 
-taz.geometry("700x600+200+100")
-taz.resizable(0,0)
+taz.geometry("800x600+200+100")
+#taz.resizable(0,0)
 mainloop()

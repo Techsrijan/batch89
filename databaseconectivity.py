@@ -16,10 +16,21 @@ updateins="update college set age=60 where Name='abcd'"
 mycursor.execute(updateins)'''
 
 que="select * from college"
-res=mycursor.execute(que)
-for row in res:
-    print(row[0])
-print(res)
+mycursor.execute(que)
+result=mycursor.fetchall()
+print(result)
+#final_result = [list(i) for i in result]
+
+#print(final_result)
 conn.commit()
 print("data inserted successfully")
+
+
+
+
+
+
+
+
+
 conn.close()
