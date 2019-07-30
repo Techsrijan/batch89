@@ -4,6 +4,7 @@ import pymysql
 from tkinter import ttk
 
 
+
 taz=Tk()
 # ========mainTreeView======================
 billsTV = ttk.Treeview(height=15, columns=('Rate', 'Quantity', 'Cost'))
@@ -60,7 +61,8 @@ def welcomewindow():
     insertButton.grid(row=3, column=0, padx=20, pady=5)
     searchButton = Button(taz, text="Search Item", width=20, height=2, fg="green", bd=10, command=searchitem)
     searchButton.grid(row=3, column=3, padx=20, pady=5)
-
+    billButton = Button(taz, text="Bill Generation", width=20, height=2, fg="green", bd=10, command=billitemwindow)
+    billButton.grid(row=3, column=6, padx=20, pady=5)
 
 #######################add item window####################################
 def additemwindow():
@@ -68,6 +70,34 @@ def additemwindow():
     mainheading()
     additemLabel = Label(taz, text="INSERT ITEM ")
     additemLabel.grid(row=2, column=2, padx=20, pady=5)
+###################Bill Item window ##################################
+def billitemwindow():
+    remove_all_widgets()
+    mainheading()
+    additemLabel = Label(taz, text="Taz Bill Generation ")
+    additemLabel.grid(row=2, column=2, padx=20, pady=5)
+    billItem()
+
+########################## bill Item ############################
+def combo_input():
+    dbconfig()
+
+    mycursor.execute('SELECT name FROM itemlist')
+
+    data = []
+
+    for row in mycursor.fetchall():
+        data.append(row[0])
+
+    return data
+
+def billItem():
+    l=combo_input()
+    c = ttk.Combobox(taz,values=l)
+    c.set("Select Item")
+    c.grid(row=4, column=2, padx=20, pady=5)
+    #c['values'] = combo_input()
+    #updateProductData()
 
 ###################### search item window #############################
 def searchitemwindow():
@@ -353,6 +383,7 @@ def adminlogin():
 
 ##############################################################################
 taz.title("Hote1 Taz Management system")
+taz.wm_iconbitmap("notepad.ico")   #to add icon
 mainheading()
 
 
