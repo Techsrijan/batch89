@@ -70,15 +70,40 @@ def additemwindow():
     mainheading()
     additemLabel = Label(taz, text="INSERT ITEM ")
     additemLabel.grid(row=2, column=2, padx=20, pady=5)
+############## get combo data ###########
+
+def OptionCallBack(*args):
+    global itemname
+    itemname=variable.get()
+    aa=ratelist()
+    baserate.set(aa)
+
+
+
+    # print(data)
+def ratelist():
+    dbconfig()
+    que="select rate from itemlist where name=%s"
+    val=(itemname)
+    mycursor.execute(que,val)
+
+    data = mycursor.fetchall()
+
+    return data
+
+
 ###################Bill Item window ##################################
 def billitemwindow():
     remove_all_widgets()
     mainheading()
     additemLabel = Label(taz, text="Taz Bill Generation ")
     additemLabel.grid(row=2, column=2, padx=20, pady=5)
+
+
     billItem()
 
 ########################## bill Item ############################
+
 def combo_input():
     dbconfig()
 
@@ -90,12 +115,22 @@ def combo_input():
         data.append(row[0])
 
     return data
+variable=StringVar(taz)
 
+baserate=StringVar()
 def billItem():
     l=combo_input()
-    c = ttk.Combobox(taz,values=l)
+
+
+    c = ttk.Combobox(taz,values=l,textvariable=variable)
     c.set("Select Item")
+    variable.trace('w', OptionCallBack)
     c.grid(row=4, column=2, padx=20, pady=5)
+    rateLabel = Label(taz, text="Rate ")
+    rateLabel.grid(row=4, column=3, padx=20, pady=5)
+    rateEntry =Entry(taz,textvariable=baserate)
+
+    rateEntry.grid(row=4, column=4, padx=20, pady=5)
     #c['values'] = combo_input()
     #updateProductData()
 
