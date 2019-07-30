@@ -58,7 +58,8 @@ def welcomewindow():
     usernameLabel.grid(row=2, column=2, padx=20, pady=5)
     insertButton = Button(taz, text="Add Item", width=20, height=2, fg="green", bd=10, command=additem)
     insertButton.grid(row=3, column=0, padx=20, pady=5)
-
+    searchButton = Button(taz, text="Search Item", width=20, height=2, fg="green", bd=10, command=searchitem)
+    searchButton.grid(row=3, column=3, padx=20, pady=5)
 
 
 #######################add item window####################################
@@ -68,18 +69,97 @@ def additemwindow():
     additemLabel = Label(taz, text="INSERT ITEM ")
     additemLabel.grid(row=2, column=2, padx=20, pady=5)
 
+###################### search item window #############################
+def searchitemwindow():
+    remove_all_widgets()
+    mainheading()
+    additemLabel = Label(taz, text="Search ITEM ")
+    additemLabel.grid(row=2, column=2, padx=20, pady=5)
+
+ #################### User Search ################################
+def userSearchItem():
+    global search
+    search=itemNameVar.get()
+    dbconfig()
+    query = "select * from itemlist where name like 'search%'"
+    res = mycursor.execute(query)
+    conn.commit()
+    messagebox.showinfo("ITEM Found", "Item Found Successfully")
+    conn.close()
+    itemNameVar.set("")
+    updateProductData()
+
+##################### search item ##################################
+def searchitem():
+    searchitemwindow()
+
+    itemNameLabel = Label(taz, text="Enter Item Name")
+    itemNameLabel.grid(row=4, column=2, padx=20, pady=5)
+
+
+    itemNameEntry = Entry(taz, textvariable=itemNameVar)
+    itemNameEntry.grid(row=4, column=3, padx=20, pady=5)
+
+
+
+    ItemSearchButton = Button(taz, text="Search", width=20, height=2, fg="green", bd=10, command=userSearchItem)
+    ItemSearchButton.grid(row=7, column=0, columnspan=2)
+
+
+    #########################################################
+    productLabel = Label(taz, text="List Of Products", font="Arial 25")
+    productLabel.grid(row=8, column=2)
+
+    billsTV.grid(row=9, column=0, columnspan=5)
+
+    scrollBar = Scrollbar(taz, orient="vertical", command=billsTV.yview)
+    scrollBar.grid(row=9, column=4, sticky="NSE")
+
+    billsTV.configure(yscrollcommand=scrollBar.set)
+
+    billsTV.heading('#0', text="Item Id")
+    billsTV.heading('#1', text="Item Name")
+    billsTV.heading('#2', text="Item Rate")
+    billsTV.heading('#3', text="Item Type")
+
+    searchProductData()
+
+################ search update treeview #################################
+
+def searchProductData():
+    # fetch alla data into records
+    records = billsTV.get_children()
+    # to delete all the records from tree view which is already exist
+    for element in records:
+        billsTV.delete(element)
+
+    # to load the table data to tree view
+    conn = pymysql.connect(host="localhost", user="root", passwd="", db="billservice")
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    query = "select * from itemlist where name like 'search%' "
+    cursor.execute(query)
+    data = cursor.fetchone()
+    #print(data)
+    for row in data:
+        billsTV.insert('', 'end', text=row['nameid'], values=(row["name"], row["rate"], row["type"]))
+    billsTV.bind("<Double-1>", OnDoubleClick)
+
+    conn.close()
+
 ###################### on double click ############################
+
+
 def OnDoubleClick(event):
     '''global itemNameVar
     global itemRateVar
     global ItemTypeVar
     global ItemIdVar'''
     item = billsTV.selection()
-    itemIdVar = billsTV.item(item, "text")
-    f=itemIdVar
+    itemIdVar1 = billsTV.item(item, "text")
+
     print("id=",itemIdVar)
     item_detail = billsTV.item(item, "values")
-    itemIdVar.set(f)
+    itemIdVar.set(itemIdVar1)
     itemTypeVar.set(item_detail[2])
     itemRateVar.set(item_detail[1])
     itemNameVar.set(item_detail[0])
@@ -99,12 +179,13 @@ def updateProductData():
     query = "select * from itemlist"
     cursor.execute(query)
     data = cursor.fetchall()
-    print(data)
+    #print(data)
     for row in data:
         billsTV.insert('', 'end', text=row['nameid'], values=(row["name"], row["rate"], row["type"]))
     billsTV.bind("<Double-1>", OnDoubleClick)
 
     conn.close()
+
 
 ##########################add item to databse ##############################
 itemIdVar = StringVar()
@@ -146,8 +227,13 @@ def additem():
     itemTypeEntry.grid(row=6, column=3, padx=20, pady=5)
 
     ItemAddButton = Button(taz, text="Add", width=20, height=2, fg="green", bd=10, command=insertItem)
-    ItemAddButton.grid(row=7, column=2, columnspan=2)
+    ItemAddButton.grid(row=7, column=0, columnspan=2)
 
+    ItemDeleteButton = Button(taz, text="Delete", width=20, height=2, fg="green", bd=10, command=deleteItem)
+    ItemDeleteButton.grid(row=7, column=3, columnspan=2)
+
+    ItemUpdateButton = Button(taz, text="Update", width=20, height=2, fg="green", bd=10, command=updateItem)
+    ItemUpdateButton.grid(row=7, column=6, columnspan=2)
     #########################################################
     productLabel = Label(taz, text="List Of Products", font="Arial 25")
     productLabel.grid(row=8, column=2)
@@ -166,8 +252,59 @@ def additem():
 
     updateProductData()
 
+################# update item ##############################
+def updateItem():
+    global itemLists
+    nameid = itemIdVar.get()
+    name = itemNameVar.get()
+    rate = itemRateVar.get()
+    type = itemTypeVar.get()
+    # print(nameid,name,rate,type)
 
+    dbconfig()
+    # query = "insert into itemlist (name,nameid,rate,type) values('{}','{}','{}','{}')". format(name,nameid,rate,type)
+    query = "update  itemlist set name=%s,rate=%s,type=%s where nameid=%s"
+    val = (name,rate,type,nameid)
+    res = mycursor.execute(query, val)
+    conn.commit()
+    messagebox.showinfo("ITEM Updated", "Item Updated Successfully")
+    conn.close()
+    itemIdVar.set("")
+    itemNameVar.set("")
+    itemRateVar.set("")
+    itemTypeVar.set("")
+    updateProductData()
+
+
+###################################insert item to database####################
+
+################delete item#################
+
+def deleteItem():
+    global itemLists
+    nameid= itemIdVar.get()
+    name = itemNameVar.get()
+    rate = itemRateVar.get()
+    type = itemTypeVar.get()
+    #print(nameid,name,rate,type)
+
+
+
+    dbconfig()
+    #query = "insert into itemlist (name,nameid,rate,type) values('{}','{}','{}','{}')". format(name,nameid,rate,type)
+    query="delete from itemlist where nameid=%s"
+    val=(nameid)
+    res=mycursor.execute(query,val)
+    conn.commit()
+    messagebox.showinfo("ITEM Deteted","Item Deleted Successfully")
+    conn.close()
+    itemIdVar.set("")
+    itemNameVar.set("")
+    itemRateVar.set("")
+    itemTypeVar.set("")
+    updateProductData()
 ###################################insert item to database#####################
+
 def insertItem():
     global itemLists
     nameid= itemIdVar.get()
@@ -207,6 +344,7 @@ def adminlogin():
     conn.close()
     if flag==True:
         welcomewindow()
+
     else:
         messagebox.showerror("Invalid user", "Either user name or password is incorrect")
         usernameVar.set("")
