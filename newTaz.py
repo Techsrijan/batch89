@@ -76,10 +76,24 @@ def OptionCallBack(*args):
     global itemname
     itemname=variable.get()
     aa=ratelist()
+    print(aa)
+    global v
+    for i in aa:
+        for j in i:
+            v=j
+            print(v)
     baserate.set(aa)
 
+def OptionCallBack1(*args):
+        global qtyvalue
+        quantity = qtyvariable.get()
+        print(quantity)
+        global costvalue
+        costvalue=cost.get()
 
+        finalvalue=int(v) * int(qtyvariable.get())
 
+        cost.set(finalvalue)
     # print(data)
 def ratelist():
     dbconfig()
@@ -116,8 +130,10 @@ def combo_input():
 
     return data
 variable=StringVar(taz)
-
+qtyvariable=StringVar(taz)
 baserate=StringVar()
+cost=IntVar()
+
 def billItem():
     l=combo_input()
 
@@ -129,10 +145,21 @@ def billItem():
     rateLabel = Label(taz, text="Rate ")
     rateLabel.grid(row=4, column=3, padx=20, pady=5)
     rateEntry =Entry(taz,textvariable=baserate)
-
     rateEntry.grid(row=4, column=4, padx=20, pady=5)
-    #c['values'] = combo_input()
-    #updateProductData()
+
+    quantityLabel = Label(taz, text="Quantity ")
+    quantityLabel.grid(row=5, column=2, padx=20, pady=5)
+    l2=[1,2,3,4,5]
+    qty = ttk.Combobox(taz, values=l2, textvariable=qtyvariable)
+    qty.set("Select Quantity")
+    qtyvariable.trace('w', OptionCallBack1)
+    qty.grid(row=5, column=3, padx=20, pady=5)
+
+    costLabel = Label(taz, text="Cost ")
+    costLabel.grid(row=6, column=1, padx=20, pady=5)
+    costEntry = Entry(taz, textvariable=cost)
+    costEntry.grid(row=6, column=2, padx=20, pady=5)
+
 
 ###################### search item window #############################
 def searchitemwindow():
