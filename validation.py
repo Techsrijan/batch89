@@ -41,6 +41,7 @@ my_entry1 = tkinter.Entry(root)  # creates an entry
 my_entry1.grid(row=1, column=0)  # shows it in the root window using grid geometry manager
 callback = root.register(only_char_input)  # registers a Tcl to Python callback
 callback1 = root.register(only_numeric_input)  # registers a Tcl to Python callback
+
 my_entry.configure(validate="key", validatecommand=(callback, "%P"))  # enables validation
-my_entry1.configure(validate="key", validatecommand=(callback1, "%P"))
+my_entry1.configure(validate="key", validatecommand=(callback1, "%P"))n
 root.mainloop()  # enters to Tkinter main event loop
