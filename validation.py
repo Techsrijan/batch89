@@ -43,5 +43,5 @@ callback = root.register(only_char_input)  # registers a Tcl to Python callback
 callback1 = root.register(only_numeric_input)  # registers a Tcl to Python callback
 
 my_entry.configure(validate="key", validatecommand=(callback, "%P"))  # enables validation
-my_entry1.configure(validate="key", validatecommand=(callback1, "%P"))n
+my_entry1.configure(validate="key", validatecommand=(callback1, "%P"))
 root.mainloop()  # enters to Tkinter main event loop
